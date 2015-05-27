@@ -9,8 +9,8 @@ def bench(host)
   end
   duration = (Time.now-start).to_f * 1000
 
-  print! "measure##{host}.response=#{duration} sample##{host}.status=#{status}\n"
-
+  print! "measure##{host}.response=#{duration}\n"
+  print! "source=#{status} count##{host}.status=1\n"
 end
 
 def minimum_sleep(seconds)
