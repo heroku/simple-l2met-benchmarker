@@ -23,7 +23,11 @@ loop do
     puts "heartbeat"
     ENV["HOSTS"].split(/,/).each do |host|
       20.times do
-        Thread.new { bench host }
+        begin
+          Thread.new { bench host }
+        rescue => e
+          puts e.message
+        end
       end
     end
   end
