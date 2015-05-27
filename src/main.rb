@@ -1,14 +1,22 @@
 $stdout.sync = true
 require "excon"
 
+M = Mutex.new
+
+def output(str)
+  M.synchronize do
+    puts str
+  end
+end
+
 def bench(host)
   status = 0
   start = Time.now
   status = Excon.get("http://#{host}.herokuapp.com").status
   duration = Time.now - start
 
-  puts "measure##{host}.response=#{duration}"
-  puts "source=#{status} count##{host}.status=1"
+  output "measure##{host}.response=#{duration}"
+  output "source=#{status} count##{host}.status=1"
 end
 
 def minimum_sleep(seconds)
@@ -26,7 +34,7 @@ loop do
         begin
           Thread.new { bench host }
         rescue => e
-          puts e.message
+          output e.message
         end
       end
     end
